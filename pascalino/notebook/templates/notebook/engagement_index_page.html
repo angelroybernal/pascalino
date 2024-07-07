@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-engagementindexpage{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb-wrapper">
+        <h1>{{ page.title }}</h1>
+    </div>
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Target</h2>
+        </div>
+        <div class="card-body">
+            <div class="target">{{ page.target|richtext }}</div>
+        </div>
+    </div>
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Scope</h2>
+        </div>
+        <div class="card-body">
+            <div class="scope">{{ page.scope|richtext }}</div>
+        </div>
+    </div>
+
+    {% if app_pages %}
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Applications</h2>
+        </div>
+        <div class="card-body pt-0 pb-5">
+            <table class="table card-table table-responsive table-responsive-large table-borderless" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for app in app_pages %}
+                    <tr>
+                        <td><a class="text-dark" href="{% pageurl app %}">{{ app.title }}</a></td>
+                        <td>{{ app.specific.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if network_pages %}
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Networks</h2>
+        </div>
+        <div class="card-body pt-0 pb-5">
+            <table class="table card-table table-responsive table-responsive-large table-borderless" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Network</th>
+                        <th>IP Range</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for network in network_pages %}
+                    <tr>
+                        <td><a class="text-dark" href="{% pageurl network %}">{{ network.title }}</a></td>
+                        <td>{{ network.specific.ip_range }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if host_pages %}
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Hosts</h2>
+        </div>
+        <div class="card-body pt-0 pb-5">
+            <table class="table card-table table-responsive table-responsive-large table-borderless" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Host</th>
+                        <th>Hostname</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for host in host_pages %}
+                    <tr>
+                        <td><a class="text-dark" href="{% pageurl host %}">{{ host.title }}</a></td>
+                        <td>{{ host.specific.hostname }}</td>
+                        <td>{{ host.specific.ip_address }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if identity_pages %}
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Identities</h2>
+        </div>
+        <div class="card-body pt-0 pb-5">
+            <table class="table card-table table-responsive table-responsive-large table-borderless" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Identity</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for identity in identity_pages %}
+                    <tr>
+                        <td><a class="text-dark" href="{% pageurl identity %}">{{ identity.title }}</a></td>
+                        <td>{{ identity.specific.description }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+    {% if test_pages %}
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Tests</h2>
+        </div>
+        <div class="card-body pt-0 pb-5">
+            <table class="table card-table table-responsive table-responsive-large table-borderless" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Test</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for test in test_pages %}
+                    <tr>
+                        <td><a class="text-dark" href="{% pageurl test %}">{{ test.title }}</a></td>
+                        {% if test.specific.test_status == 'detected' %}
+                        <td><span class="badge badge-warning">Detected</span></td>
+                        {% elif test.specific.test_status == 'stopped' %}
+                        <td><span class="badge badge-success">Stopped</span></td>
+                        {% elif test.specific.test_status == 'failed' %}
+                        <td><span class="badge badge-success">Failed</span></td>
+                        {% elif test.specific.test_status == 'successful' %}
+                        <td><span class="badge badge-danger">Successful</span></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if notes %}
+        {% for note in notes %}
+        <div class="card card-default">
+            <div class="card-header card-header-border-none">
+                <a class="h4 text-dark" href="{% pageurl note %}">{{ note.title }} - {{ note.owner }} - {{note.last_published_at}}</a>
+            </div>
+            <div class="card-body pt-0 pb-5">
+                <div class="note">{{ note.specific.detail|richtext }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-testpage{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb-wrapper">
+        <h1>{{ page.title }}</h1>
+        <div class="test-summary">Execution: {{ page.test_execution }} - Status:
+            {% if page.test_status == 'detected' %}
+            <span class="badge badge-warning">Detected</span>
+            {% elif page.test_status == 'stopped' %}
+            <span class="badge badge-success">Stopped</span>
+            {% elif page.test_status == 'failed' %}
+            <span class="badge badge-success">Failed</span>
+            {% elif page.test_status == 'successful' %}
+            <span class="badge badge-danger">Successful</span>
+            {% endif %}</div>
+    </div>
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Target</h2>
+        </div>
+        <div class="card-body">
+            <div class="target">{{ page.target|richtext }}</div>
+        </div>
+    </div>
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Expected Behavior</h2>
+        </div>
+        <div class="card-body">
+            <div class="expected-behavior">{{ page.expected_behavior|richtext }}</div>
+        </div>
+    </div>
+    <div class="card card-default">
+        <div class="card-header card-header-border-bottom">
+            <h2>Real Behavior</h2>
+        </div>
+        <div class="card-body">
+            <div class="real-behavior">{{ page.real_behavior|richtext }}</div>
+        </div>
+    </div>
+    {% if notes %}
+        {% for note in notes %}
+        <div class="card card-default">
+            <div class="card-header card-header-border-none">
+                <a class="h4 text-dark" href="{% pageurl note %}">{{ note.title }} - {{ note.owner }} - {{note.last_published_at}}</a>
+            </div>
+            <div class="card-body pt-0 pb-5">
+                <div class="note">{{ note.specific.detail|richtext }}</div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

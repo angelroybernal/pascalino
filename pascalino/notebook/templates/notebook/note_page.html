@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags %}
+
+{% block body_class %}template-notepage{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb-wrapper">
+        <h1>{{ page.title }}</h1>
+        <div class="note-properties">{{ page.owner }} - {{ page.last_published_at }}</div>
+    </div>
+    <div class="card card-default">
+        <div class="card-body">
+            <div class="detail">{{ page.detail|richtext }}</div>
+        </div>
+    </div>
+
+{% endblock %}
